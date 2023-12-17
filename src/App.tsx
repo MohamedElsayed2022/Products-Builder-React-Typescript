@@ -1,10 +1,20 @@
 import './App.css'
+import ProductCard from './components/ProductCard'
 function App() {
 
   return (
-    <>
-      <h2 className='text-3xl font-bold underline'>Hello World !</h2>
-    </>
+    <div>
+ <div className='border-2 border-red-950'>
+    <ProductCard/>
+    <ProductCard/>
+    <ProductCard/>
+    <ProductCard/>
+    <ProductCard/>
+    <ProductCard/>
+
+    </div>
+    </div>
+   
   )
 }
 
