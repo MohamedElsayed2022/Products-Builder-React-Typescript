@@ -1,19 +1,38 @@
+import { Children, useState } from 'react'
 import './App.css'
 import ProductCard from './components/ProductCard'
+import Modal from './components/Ui/Modal'
+import { productList } from './components/data'
+import Button from './components/Ui/Button'
 function App() {
+  const renderProductList = productList.map(product=> <ProductCard key={product.id} product={product}/>  )
+    let [isOpen, setIsOpen] = useState(false)
+
+  function closeModal() {
+    setIsOpen(false)
+  }
+
+  function openModal() {
+    setIsOpen(true)
+  }
 
   return (
-    <div>
- <div className='border-2 border-red-950'>
-    <ProductCard/>
-    <ProductCard/>
-    <ProductCard/>
-    <ProductCard/>
-    <ProductCard/>
-    <ProductCard/>
+    <main className='container mx-auto'>
+            <Button className='bg-gray-300 hover:bg-gray-400' onClick={openModal}>Add</Button>
 
+      <div className='grid grid-cols -1 md:grid-cols-2 lg:grid-cols-4 gap-2 md:gap-4 container'>
+        {renderProductList}
     </div>
-    </div>
+    <Modal isOpen={isOpen} closeModal={closeModal} title='Add New Title'>
+      <div className='flex items-center space-x-3'>
+      <Button className='bg-indigo-700 hover:bg-indigo-800'>Cancel</Button>
+      <Button className='bg-gray-300 hover:bg-gray-400'>Submit</Button>
+
+      </div>
+   
+      </Modal>
+    </main>
+ 
    
   )
 }
