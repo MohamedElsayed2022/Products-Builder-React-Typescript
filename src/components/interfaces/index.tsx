@@ -14,6 +14,6 @@ export interface IProduct{
 export interface IFormInput {
     id : string,
     type : string ,
-    name : string,
+    name : 'title' | 'description' | 'imageURL' | 'price',
     label :string
 }
