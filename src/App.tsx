@@ -1,4 +1,11 @@
-import { ChangeEvent, ChangeEventHandler, Children, FormEvent, FormEventHandler, useState } from "react";
+import {
+  ChangeEvent,
+  ChangeEventHandler,
+  Children,
+  FormEvent,
+  FormEventHandler,
+  useState,
+} from "react";
 import "./App.css";
 import ProductCard from "./components/ProductCard";
 import Modal from "./components/Ui/Modal";
@@ -7,42 +14,57 @@ import Button from "./components/Ui/Button";
 import Input from "./components/Ui/Input";
 import { IProduct } from "./components/interfaces";
 import { productVaildation } from "./components/validation";
-const defaultProductObj={
+import ErrorMessage from "./components/ErrorMessage";
+const defaultProductObj = {
   title: "",
   description: "",
   imageURL: "",
   price: "",
   colors: [],
-  category : {
-    name :'',
-    imageURL:''
-}}
+  category: {
+    name: "",
+    imageURL: "",
+  },
+};
 function App() {
-  
+  //usestate
   const [product, setProduct] = useState<IProduct>(defaultProductObj);
-  
+  const [errors ,setErrors] = useState({title : '',description : '', imageURL:'',price:''})
+  const [isOpen, setIsOpen] = useState(false);
+
   const renderProductList = productList.map((product) => (
     <ProductCard key={product.id} product={product} />
   ));
-  let [isOpen, setIsOpen] = useState(false);
   /**HANDLER */
   const closeModal = () => setIsOpen(false);
   const openModal = () => setIsOpen(true);
   const onChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
     const { value, name } = e.target;
     setProduct({ ...product, [name]: value });
+    setErrors({...errors  , [name] :''})
   };
 
-  const onCancel = ()=>{
-    setProduct(defaultProductObj)
-    setIsOpen(false)
-  }
-
-  const SubmitHandler = (e : FormEvent<HTMLFormElement>):void =>{
-    e.preventDefault()
-    const errors = productVaildation({title : product.title , description : product.description , imageURL:product.imageURL ,  price: product.price})
-    console.log(errors)
-  }
+  const onCancel = () => {
+    setProduct(defaultProductObj);
+    setIsOpen(false);
+  };
+  const {title , description , imageURL , price} = product
+  const SubmitHandler = (e: FormEvent<HTMLFormElement>): void => {
+    e.preventDefault();
+    const errors = productVaildation({
+      title,
+      description,
+      imageURL,
+      price,
+    });
+    const hasErrorMsg = Object.values(errors).some(value => value==="") && Object.values(errors).every(value=>value ==="")
+    console.log(hasErrorMsg)
+    console.log("Hello World !")
+    if(!hasErrorMsg){
+      setErrors(errors)
+      return;
+    }
+  };
   /**RENDER */
   const renderFormInputList = formInputsList.map((input) => (
     <div className="flex flex-col" key={input.id}>
@@ -56,6 +78,7 @@ function App() {
         value={product[input.name]}
         onChange={onChangeHandler}
       />
+      <ErrorMessage msg={errors[input.name]}/>
     </div>
   ));
 
@@ -72,9 +95,14 @@ function App() {
         <form className="space-x-3" onSubmit={SubmitHandler}>
           <div className="space-y-3">{renderFormInputList}</div>
           <div className="flex items-center space-x-3 mt-3">
-          <Button className=" bg-indigo-700 hover:bg-indigo-800">Submit</Button>
+            <Button className=" bg-indigo-700 hover:bg-indigo-800">
+              Submit
+            </Button>
 
-            <Button className="bg-gray-300 hover:bg-gray-400 " onClick={onCancel}>
+            <Button
+              className="bg-gray-300 hover:bg-gray-400 "
+              onClick={onCancel}
+            >
               Cancel
             </Button>
           </div>
