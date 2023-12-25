@@ -70,7 +70,7 @@ function App() {
       return;
     }
 
-    setProducts(prev => [...prev, { ...product, id: uuid() ,colors:tempColors }]);
+    setProducts(prev => [ { ...product, id: uuid() ,colors:tempColors }, ...prev]);
     setProduct(defaultProductObj)
     setIsOpen(false)
 
@@ -113,10 +113,11 @@ function App() {
 
       <div className="grid grid-cols -1 md:grid-cols-2 lg:grid-cols-4 gap-2 md:gap-4 container">
         {renderProductList}
+
       </div>
       <Modal isOpen={isOpen} closeModal={closeModal} title="Add New Title">
         <form className="space-x-3" onSubmit={SubmitHandler}>
-          <div className="space-y-3">{renderFormInputList} </div>
+          <div className="space-y-3">{renderFormInputList} <Select/> </div>
           <div className="flex items-center space-x-1 mt-3 flex-wrap">
             {renderProductColors}
           </div>
