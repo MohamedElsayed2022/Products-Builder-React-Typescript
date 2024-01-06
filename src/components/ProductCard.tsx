@@ -5,12 +5,19 @@ import CircleColor from "./Ui/CircleColor";
 import { IProduct } from "./interfaces";
 import { txtSlicer } from "./utils/functions";
 interface Iprops {
-  product : IProduct
+  product : IProduct,
+  setProductToEdit : (product : IProduct)=>void,
+  openModalEdit : ()=> void
 }
-const ProductCard = ({product}: Iprops) => {
+
+const ProductCard = ({product ,setProductToEdit , openModalEdit}: Iprops) => {
   const {category , colors, description , imageURL , price ,title} = product
   const [tempColors, setTempColors] = useState<String[]>([]);
-
+/**HANDLER */
+const onEdit = ()=>{
+  setProductToEdit(product)
+  openModalEdit()
+}
   const renderProductColors = colors.map((color) => (
     <CircleColor
       key={color}
@@ -41,7 +48,7 @@ const ProductCard = ({product}: Iprops) => {
       <Image imageUrl={imageURL} className="w-10 h-10 rounded-full object-bottom" alt={"Product Name"}/>
       </div>
       <div className="flex justify-around space-x-2 mt-5">
-        <Button  className="bg-indigo-700" width="w-full" onClick={()=>console.log("Cliced !")} >EDIT</Button>
+        <Button  className="bg-indigo-700" width="w-full" onClick={onEdit} >EDIT</Button>
         <Button className="bg-red-700 ">DELETE</Button>
       </div>
     </div>

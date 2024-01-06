@@ -1,9 +1,10 @@
-export const productVaildation = (product: { title: string  , description : string , imageURL:string ;  price: string}) => {
+export const productVaildation = (product: { title: string  , description : string , imageURL:string ;  price: string , colors : string[]}) => {
   const errors: {description: string; imageURL: string ; price: string; title: string} = {
     title: "",
     description: "",
     imageURL: "",
     price: "",
+    colors :[]
   };
   const validUrl = /^(ftp|http|https):\/\/[^ "]+$/.test(product.imageURL);
 

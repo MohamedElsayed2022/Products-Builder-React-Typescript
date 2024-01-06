@@ -1,5 +1,5 @@
 export interface IProduct{
-    id? : string | undefined,
+    id? : string ,
     title : string,
     description : string ,
     imageURL : string,
@@ -21,5 +21,5 @@ export interface IFormInput {
 export interface ICategory {
     id: string,
     name : string ,
-    imageURl : string
+    imageURL : string
 }
