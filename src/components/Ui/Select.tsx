@@ -5,8 +5,8 @@ import { categories } from '../data'
 import { ICategory } from '../interfaces'
 
 interface IProps {
-  selected : string,
-  setSelected:(category :ICategory)=>void
+  selected : {name : string , imageURL : string},
+  setSelected:(category :ICategory)=>void,
 }
 
 function classNames(...classes:string[]) {

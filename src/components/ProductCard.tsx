@@ -7,16 +7,19 @@ import { txtSlicer } from "./utils/functions";
 interface Iprops {
   product : IProduct,
   setProductToEdit : (product : IProduct)=>void,
-  openModalEdit : ()=> void
+  openModalEdit : ()=> void,
+  idx : number ;
+  setProductToEditIdx : (value : number) => void
 }
 
-const ProductCard = ({product ,setProductToEdit , openModalEdit}: Iprops) => {
-  const {category , colors, description , imageURL , price ,title} = product
+const ProductCard = ({product ,setProductToEdit , openModalEdit , idx , setProductToEditIdx}: Iprops) => {
+  const {category , colors, description , imageURL , price ,title  } = product
   const [tempColors, setTempColors] = useState<String[]>([]);
 /**HANDLER */
 const onEdit = ()=>{
   setProductToEdit(product)
   openModalEdit()
+  setProductToEditIdx(idx)
 }
   const renderProductColors = colors.map((color) => (
     <CircleColor
@@ -44,12 +47,16 @@ const onEdit = ()=>{
        {renderProductColors}
       </div>
       <div className="flex justify-between items-center">
-        <span >{price} $</span>
-      <Image imageUrl={imageURL} className="w-10 h-10 rounded-full object-bottom" alt={"Product Name"}/>
+        <span className="text-blue-700 font-semibold" >{price} $</span>
+        <div className="flex gap-3 items-center font-medium">
+          <h5>{category.name}</h5>
+        <Image imageUrl={imageURL} className="w-10 h-10 rounded-full object-bottom" alt={"Product Name"}/>
+
+        </div>
       </div>
       <div className="flex justify-around space-x-2 mt-5">
-        <Button  className="bg-indigo-700" width="w-full" onClick={onEdit} >EDIT</Button>
-        <Button className="bg-red-700 ">DELETE</Button>
+        <Button  className="bg-indigo-700 font-medium" width="w-full" onClick={onEdit} >Edit</Button>
+        <Button className="bg-red-700 font-medium">Remove</Button>
       </div>
     </div>
   );
