@@ -11,6 +11,7 @@ import { productVaildation } from "./components/validation";
 import ErrorMessage from "./components/ErrorMessage";
 import CircleColor from "./components/Ui/CircleColor";
 import Select from "./components/Ui/Select";
+import { ProductnameTypes } from "./types";
 const defaultProductObj = {
   title: "",
   description: "",
@@ -88,6 +89,8 @@ function App() {
     setProducts(prev => [ { ...product, id: uuid() ,colors:tempColors , category:selectedCategory }, ...prev]);
     setProduct(defaultProductObj)
     setIsOpen(false)
+    setTempColors([])
+    closeModal()
 
   };
 
@@ -110,9 +113,10 @@ function App() {
       return;
     }
 
-    setProducts(prev => [ { ...product, id: uuid() ,colors:tempColors , category:selectedCategory }, ...prev]);
     setProduct(defaultProductObj)
     setIsOpen(false)
+    setTempColors([])
+    closeModal()
 
   };
   /**RENDER */
@@ -144,6 +148,23 @@ function App() {
       }}
     />
   ));
+
+  const renderProductEditWithErrorMsg = (id : string , label : string , name :keyof ProductnameTypes)=>{
+    return (
+    <div className="flex flex-col" >
+    <label htmlFor={id} className="mb-[1px] text-sm font-medium">
+      {label}
+    </label>
+    <Input
+      type="text"
+      name={name}
+      value={productToEdit[name]}
+      onChange={onChangeEditHandler}
+    />
+    <ErrorMessage msg={errors[name]} />
+  </div>
+    )
+  }
 
   return (
     <main className="container mx-auto">
@@ -197,30 +218,12 @@ function App() {
       {/**EDIT PRODUCT */}
       <Modal isOpen={isOpenEdit} closeModal={closeModalEdit} title="EDIT THIS PRODUCT">
         <form className="space-x-3" onSubmit={SubmitEditHandler}>
-        <div className="flex flex-col" >
-      <label  className="mb-[1px] text-sm font-medium">
-        Product Title
-      </label>
-      <Input
-        type="text"
-        name={productToEdit.title}
-        value={productToEdit.title}
-        onChange={onChangeEditHandler}
-      />
-      <ErrorMessage msg={''} />
-    </div>
-    <div className="flex flex-col" >
-      <label  className="mb-[1px] text-sm font-medium">
-        Product Desciption
-      </label>
-      <Input
-        type="text"
-        name={productToEdit.description}
-        value={productToEdit.description}
-        onChange={onChangeEditHandler}
-      />
-      <ErrorMessage msg={''} />
-    </div>
+         
+             {renderProductEditWithErrorMsg('title' , 'Product Title' , 'title')}
+             {renderProductEditWithErrorMsg('description' , 'Product Description' , 'description')}
+             {renderProductEditWithErrorMsg('price' , 'Product Price' , 'price')}
+             {renderProductEditWithErrorMsg('imageURL' , 'Product ImageURL' , 'imageURL')}
+
           {/* <div className="space-y-3">{renderFormInputList} <Select selected={selectedCategory} setSelected={setSelectedCategory}/> </div> */}
           {/* <div className="flex items-center space-x-1 mt-3 flex-wrap">
             {renderProductColors}
