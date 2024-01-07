@@ -9,18 +9,24 @@ interface Iprops {
   setProductToEdit : (product : IProduct)=>void,
   openModalEdit : ()=> void,
   idx : number ;
-  setProductToEditIdx : (value : number) => void
+  setProductToEditIdx : (value : number) => void,
+  openConfirmModal :()=>void,
 }
 
-const ProductCard = ({product ,setProductToEdit , openModalEdit , idx , setProductToEditIdx}: Iprops) => {
+const ProductCard = ({product ,setProductToEdit , openModalEdit , idx , setProductToEditIdx , openConfirmModal}: Iprops) => {
   const {category , colors, description , imageURL , price ,title  } = product
   const [tempColors, setTempColors] = useState<String[]>([]);
 /**HANDLER */
-const onEdit = ()=>{
-  setProductToEdit(product)
-  openModalEdit()
-  setProductToEditIdx(idx)
-}
+const onEdit = () => {
+  setProductToEdit(product);
+  openModalEdit();
+  setProductToEditIdx(idx);
+};
+const onRemove = () => {
+  setProductToEdit(product);
+  openConfirmModal();
+};
+
   const renderProductColors = colors.map((color) => (
     <CircleColor
       key={color}
@@ -35,16 +41,16 @@ const onEdit = ()=>{
     />
   ));
   return (
-    <div className="max-w-sm md:max-w-lg mx-auto md:mx-0 border p-2 rounded-2 text-lg flex flex-col">
+    <div className="max-w-sm md:max-w-lg mx-auto md:mx-0 border rounded-md p-2 flex flex-col space-y-3">
       
         <Image 
-        imageUrl={product.imageURL} alt={category.name} className="mb-2 rounded-md" />
+        imageUrl={product.imageURL} alt={category.name} className="mb-2 rounded-md h-60" />
       <h3 className="font-bold">{title}</h3>
       <p className="text-gray-500">
        {txtSlicer(description)}
       </p>
-      <div className="flex flex-row flex-wrap gap-2 my-4">
-       {renderProductColors}
+      <div className="flex items-center flex-wrap space-x-1">
+        {!colors.length ? <p className="min-h-[20px]">Not available colors!</p> : renderProductColors}
       </div>
       <div className="flex justify-between items-center">
         <span className="text-blue-700 font-semibold" >{price} $</span>
@@ -56,7 +62,7 @@ const onEdit = ()=>{
       </div>
       <div className="flex justify-around space-x-2 mt-5">
         <Button  className="bg-indigo-700 font-medium" width="w-full" onClick={onEdit} >Edit</Button>
-        <Button className="bg-red-700 font-medium">Remove</Button>
+        <Button className="bg-red-700 font-medium" onClick={onRemove}>Remove</Button>
       </div>
     </div>
   );

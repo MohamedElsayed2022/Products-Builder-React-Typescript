@@ -46,6 +46,8 @@ function App() {
   const [productToEdit, setProductToEdit] =
     useState<IProduct>(defaultProductObj);
   const [productToEditIdx, setProductToEditIdx] = useState<number>(0);
+  const [isOpenConfirmModal, setIsOpenConfirmModal] = useState(false);
+
 
   console.log(tempColors);
 
@@ -54,11 +56,14 @@ function App() {
   const openModal = () => setIsOpen(true);
   const closeModalEdit = () => setIsOpenEdit(false);
   const openModalEdit = () => setIsOpenEdit(true);
+
   const onChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
     const { value, name } = e.target;
     setProduct({ ...product, [name]: value });
     setErrors({ ...errors, [name]: "" });
   };
+  const closeConfirmModal = () => setIsOpenConfirmModal(false);
+  const openConfirmModal = () => setIsOpenConfirmModal(true);
 
   const onChangeEditHandler = (e: ChangeEvent<HTMLInputElement>) => {
     const { value, name } = e.target;
@@ -77,9 +82,15 @@ function App() {
   ));
   const onCancel = () => {
     setProduct(defaultProductObj);
-    setIsOpen(false);
     closeModal();
   };
+
+  const removeProductHandler = ()=>{
+   console.log("Product ID" , productToEdit.id)
+   const filtered = products.filter(product => product.id !== productToEdit.id)
+   setProducts(filtered)
+   closeConfirmModal()
+  }
   const SubmitHandler = (e: FormEvent<HTMLFormElement>): void => {
     e.preventDefault();
     const { title, description, imageURL, price } = product;
@@ -204,7 +215,7 @@ function App() {
         Add
       </Button>
 
-      <div className="grid grid-cols -1 md:grid-cols-2 lg:grid-cols-4 gap-2 md:gap-4 container">
+      <div className="m-5 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-2 md:gap-4 p-2 rounded-md">
         {renderProductList}
       </div>
       {/**ADD PRODUCT */}
@@ -300,6 +311,23 @@ function App() {
             </Button>
           </div>
         </form>
+      </Modal>
+
+      {/* DELETE PRODUCT */}
+      <Modal
+        isOpen={isOpenConfirmModal}
+        closeModal={closeConfirmModal}
+        title="Are you sure you want to remove this Product from your Store?"
+        description="Deleting this product will remove it permanently from your inventory. Any associated data, sales history, and other related information will also be deleted. Please make sure this is the intended action."
+      >
+        <div className="flex items-center space-x-3">
+          <Button className="bg-[#c2344d] hover:bg-red-800" onClick={removeProductHandler}>
+            Yes, remove
+          </Button>
+          <Button type="button" className="bg-[#f5f5fa] hover:bg-gray-300 !text-black" onClick={closeConfirmModal}>
+            Cancel
+          </Button>
+        </div>
       </Modal>
     </main>
   );

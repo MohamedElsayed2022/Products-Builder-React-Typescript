@@ -4,10 +4,12 @@ interface IProps {
   isOpen : boolean;
   closeModal : ()=> void;
   title? : string;
-  children :ReactNode
+  children :ReactNode,
+  description?: string;
+
   
 }
-export default function Modal({isOpen , closeModal , title , children}:IProps) {
+export default function Modal({isOpen , closeModal , title , children , description}:IProps) {
 
 
   return (
@@ -41,15 +43,14 @@ export default function Modal({isOpen , closeModal , title , children}:IProps) {
                 leaveFrom="opacity-100 scale-100"
                 leaveTo="opacity-0 scale-95"
               >
-                <Dialog.Panel className="w-full max-w-md transform overflow-hidden rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all">
-                  {title && 
-                  <Dialog.Title
-                  as="h3"
-                  className="text-lg font-medium leading-6 text-gray-900"
-                >
-                  {title}
-                </Dialog.Title>
-                  }
+                <Dialog.Panel className="w-full max-w-md transform overflow-hidden rounded-lg bg-white p-6 text-left align-middle shadow-xl transition-all">
+                {title && (
+                    <Dialog.Title as="h3" className="text-lg font-medium leading-6 text-gray-900">
+                      {title}
+                    </Dialog.Title>
+                  )}
+                  {description && <p className="text-sm text-gray-500 mt-3">{description}</p>}
+                  
                 
                   <div className="mt-4">
                     {children}
