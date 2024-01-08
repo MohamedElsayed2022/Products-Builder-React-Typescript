@@ -1,4 +1,5 @@
 import { ChangeEvent, FormEvent, useState } from "react";
+import toast, { Toaster } from 'react-hot-toast';
 import "./App.css";
 import { v4 as uuid } from "uuid";
 import ProductCard from "./components/ProductCard";
@@ -78,6 +79,7 @@ function App() {
       openModalEdit={openModalEdit}
       idx={idx}
       setProductToEditIdx={setProductToEditIdx}
+      openConfirmModal={openConfirmModal}
     />
   ));
   const onCancel = () => {
@@ -90,6 +92,11 @@ function App() {
    const filtered = products.filter(product => product.id !== productToEdit.id)
    setProducts(filtered)
    closeConfirmModal()
+   toast("Product Has Been Deleted " , { style :{backgroundColor:"black" , color:"#fff"} ,  position: 'top-center', duration : 4000 ,
+   icon: '👏'  ,   iconTheme: {
+    primary: 'red',
+    secondary: '#333',
+  },}  )
   }
   const SubmitHandler = (e: FormEvent<HTMLFormElement>): void => {
     e.preventDefault();
@@ -124,6 +131,11 @@ function App() {
     setIsOpen(false);
     setTempColors([]);
     closeModal();
+    toast("Product Has Been Updated" , { style :{backgroundColor:"blue" , color:"#fff"} ,  position: 'top-center', duration : 4000 ,
+    icon: '👏'  ,   iconTheme: {
+     primary: 'red',
+     secondary: '#333',
+   },}  )
   };
   const SubmitEditHandler = (e: FormEvent<HTMLFormElement>): void => {
     e.preventDefault();
@@ -150,6 +162,11 @@ function App() {
     setProductToEdit(defaultProductObj);
     setTempColors([]);
     closeModalEdit();
+    toast("Product Has Been Added " , { style :{backgroundColor:"green" , color:"#fff"} ,  position: 'top-center', duration : 4000 ,
+    icon: '👏'  ,   iconTheme: {
+     primary: 'red',
+     secondary: '#333',
+   },}  )
   };
   /**RENDER */
   const renderFormInputList = formInputsList.map((input) => (
@@ -207,12 +224,13 @@ function App() {
   };
 
   return (
-    <main className="container mx-auto">
-      <Button
-        className="bg-indigo-700 hover:bg-indigo-800 text-white flex-1 mb-1"
+    <main className="container ">
+        <Button
+        className="block bg-indigo-700 hover:bg-indigo-800 mx-auto my-10 px-10 font-medium"
         onClick={openModal}
+        width="w-fit"
       >
-        Add
+        Build a Product
       </Button>
 
       <div className="m-5 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-2 md:gap-4 p-2 rounded-md">
@@ -304,7 +322,7 @@ function App() {
             </Button>
 
             <Button
-              className="bg-gray-300 hover:bg-gray-400 "
+              className="bg-[#f5f5fa] hover:bg-gray-300 !text-black "
               onClick={onCancel}
             >
               Cancel
@@ -321,7 +339,7 @@ function App() {
         description="Deleting this product will remove it permanently from your inventory. Any associated data, sales history, and other related information will also be deleted. Please make sure this is the intended action."
       >
         <div className="flex items-center space-x-3">
-          <Button className="bg-[#c2344d] hover:bg-red-800" onClick={removeProductHandler}>
+          <Button className="bg-[#c2344d] hover:bg-red-800" onClick={removeProductHandler} >
             Yes, remove
           </Button>
           <Button type="button" className="bg-[#f5f5fa] hover:bg-gray-300 !text-black" onClick={closeConfirmModal}>
@@ -329,6 +347,7 @@ function App() {
           </Button>
         </div>
       </Modal>
+      <Toaster/>
     </main>
   );
 }
